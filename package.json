@@ -1,0 +1,38 @@
+{
+  "name": "kekal",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "tsc -P tsconfig.build.json",
+    "prepare": "npm run clean && npm run build"
+  },
+  "main": "./lib/permanent.js",
+  "typings": "./lib/permanent.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "repository": "aikoven/kekal",
+  "author": "Daniel Lytkin <dan.lytkin@gmail.com>",
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "testRegex": "(\\.|/)spec\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "^22.0.0",
+    "jest": "^22.0.4",
+    "rimraf": "^2.6.2",
+    "ts-jest": "^22.0.0",
+    "typescript": "^2.6.2"
+  },
+  "dependencies": {
+    "assert-never": "^1.1.0"
+  }
+}
