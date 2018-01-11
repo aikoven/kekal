@@ -1,4 +1,4 @@
-# Kekal
+# Kekal [![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
 
 **Permanent** ([Malay](https://en.wikipedia.org/wiki/Malay_language): *kekal*)
 is an abstraction for a long-lived process that can be stopped manually or
@@ -138,3 +138,8 @@ await connectionPermanent.join();
   or aborted too.
 
   Stopping child permanent doesn't stop this permanent.
+
+[npm-image]: https://badge.fury.io/js/kekal.svg
+[npm-url]: https://badge.fury.io/js/kekal
+[travis-image]: https://travis-ci.org/aikoven/kekal.svg?branch=master
+[travis-url]: https://travis-ci.org/aikoven/kekal
