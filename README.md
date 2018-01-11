@@ -2,8 +2,9 @@
 
 **Permanent** ([Malay](https://en.wikipedia.org/wiki/Malay_language): *kekal*)
 is an abstraction for a long-lived process that can be stopped manually or
-aborted due to an error. Possible use cases are connections, subscriptions,
-locks etc.
+aborted due to an error.
+
+Possible use cases are connections, subscriptions, locks etc.
 
 ## Installation
 
@@ -68,6 +69,7 @@ await connectionPermanent.join();
 
   Create a permanent that yields an array of values from each input
   permanent.
+
   Returned permanent stops or aborts when any input permanent is stopped or
   aborted.
 
@@ -75,8 +77,10 @@ await connectionPermanent.join();
 
   When any of given permanents is stopped or aborted, stops all other
   permanents.
+
   Returns a promise that resolves once all permanents stop and rejects if any
   of them aborts.
+
   Accepts optional callback that is called with the `stop` function that
   stops all permanents.
 
@@ -91,30 +95,37 @@ await connectionPermanent.join();
     Called by the executor when the permanent value becomes
     available. Returns a promise that is resolved once the permanent is
     stopped and rejected when it is aborted.
+
     Calling `yieldValue` more than once is an error.
   * `abort`
 
     Called by the executor when the permanent fails.
+
     Calling `abort` more than once is a no-op.
 
 * `join(): Promise<void>`
 
   Return a promise that resolves once the permanent successfully stops and
   performs its cleanup and rejects if it aborts.
+
   This is the same promise that is returned from the executor.
 
 * `stop(): Promise<void>`
 
   Stop a permanent.
+
   Note that the promise returned from `join` resolves only after a possibly
   async cleanup has finished.
+
   Return a promise that resolves once all inside functions and child
   permanents have finished and cleanup is about to start.
 
 * `inside<R>(fn: (value: T) => R | PromiseLike<R>): Promise<R>`
 
   Calls given function on permanent's value when it becomes available.
+
   The permanent is blocked from stopping until all inside functions finish.
+
   Returned promise rejects if the permanent is already stopped or aborted
   or stops before yielding its value.
 
@@ -122,6 +133,8 @@ await connectionPermanent.join();
 
   Create a child permanent from the value of this permanent when it becomes
   available.
+
   When this permanent is stopped or aborted, the child permanent is stopped
   or aborted too.
+
   Stopping child permanent doesn't stop this permanent.
