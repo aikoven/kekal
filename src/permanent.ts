@@ -67,8 +67,8 @@ export class Permanent<T> {
    * When any of given permanents is stopped or aborted, stops all other
    * permanents.
    *
-   * Returns a promise that resolves once all permanents stop and rejects if any
-   * of them aborts.
+   * Returns a promise that resolves or rejects after all permanents are
+   * stopped.
    *
    * Accepts optional callback that is called with the `stop` function that
    * stops all permanents.
@@ -91,7 +91,15 @@ export class Permanent<T> {
 
     Promise.race(promises).then(stopAll, stopAll);
 
-    return Promise.all(promises).then(noop);
+    return Promise.all(promises.map(p => p.then(noop, identity))).then(
+      results => {
+        for (const result of results) {
+          if (result) {
+            throw result;
+          }
+        }
+      },
+    );
   }
 
   /**
