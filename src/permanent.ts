@@ -135,7 +135,15 @@ export class Permanent<T> {
           const result = fn(value);
 
           if (isPromise(result)) {
-            beforeStopTasks.push(cb => result.then(cb, cb));
+            const task = (cb: () => void) => result.then(cb, cb);
+            const removeTask = () => {
+              if (this._state.type === 'live') {
+                const index = this._state.beforeStopTasks.indexOf(task);
+                this._state.beforeStopTasks.splice(index, 1);
+              }
+            };
+            beforeStopTasks.push(task);
+            result.then(removeTask, removeTask);
           }
 
           resolve(result);
@@ -265,13 +273,13 @@ export class Permanent<T> {
         const result = fn(this._state.value);
 
         if (isPromise(result)) {
-          const task = (cb: (r: R) => void) => result.then(cb, cb);
+          const task = (cb: () => void) => result.then(cb, cb);
           const removeTask = () => {
             if (this._state.type === 'live') {
               const index = this._state.beforeStopTasks.indexOf(task);
               this._state.beforeStopTasks.splice(index, 1);
             }
-          }
+          };
           this._state.beforeStopTasks.push(task);
           result.then(removeTask, removeTask);
         }
